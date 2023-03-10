@@ -10,7 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
-                    
+    
     // MARK: - Methods
     // MARK: Lifecycle
     
@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
-                
+    
 }
 
 extension ViewController : UITableViewDataSource {
@@ -32,12 +32,24 @@ extension ViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return sections[section].sectionCells.count
+        let concreteSection = sections[section]
+        if concreteSection.isCollapsible && concreteSection.isCollapsed {
+            return 0
+        }
+        return concreteSection.sectionCells.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let cell = tableView.dequeueReusableCell(withIdentifier:
+                                                    "HeaderCell") as! HeaderCell
+        let concreteSection = sections[section]
+        cell.titleLabel?.text = concreteSection.sectionTitle
+        return cell
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier:
-                                                 "SubtitleCell",
+                                                    "SubtitleCell",
                                                  for: indexPath)
         let item = sections[indexPath.section].sectionCells[indexPath.row]
         cell.textLabel?.text = item.title
