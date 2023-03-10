@@ -7,10 +7,16 @@
 
 import Foundation
 
-struct SectionViewModel {
-    let sectionTitle: String
+class SectionViewModel {
+    var sectionTitle: String = ""
     var sectionCells: [CellViewModel]
-    let isCollapsible: Bool = true
+    var isCollapsible: Bool = true
     var isCollapsed: Bool = false
+    
+    internal init(sectionTitle: String, sectionCells: [CellViewModel])
+    {
+        self.sectionTitle = sectionTitle
+        self.sectionCells = sectionCells
+    }
 }
 

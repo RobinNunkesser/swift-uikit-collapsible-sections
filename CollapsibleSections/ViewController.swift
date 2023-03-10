@@ -10,13 +10,24 @@ import UIKit
 class ViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
+        
+    var reloadSections: ((_ section: Int) -> Void)?
     
     // MARK: - Methods
     // MARK: Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        reloadSections = { [weak self] (section: Int) in
+              self?.tableView?.beginUpdates()
+              self?.tableView?.reloadSections([section], with: .fade)
+              self?.tableView?.endUpdates()
+           }
+        
+        tableView?.estimatedRowHeight = 100
+        tableView?.rowHeight = UITableView.automaticDimension
+        tableView?.sectionHeaderHeight = 70
+        tableView?.separatorStyle = .none
     }
     
 }
@@ -44,9 +55,11 @@ extension ViewController : UITableViewDataSource {
                                                     "HeaderCell") as! HeaderCell
         let concreteSection = sections[section]
         cell.titleLabel?.text = concreteSection.sectionTitle
+        cell.section = section
+        cell.delegate = self
         return cell
     }
-    
+        
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier:
                                                     "SubtitleCell",
@@ -63,3 +76,18 @@ extension ViewController : UITableViewDelegate {
     
 }
 
+extension ViewController: HeaderCellDelegate {
+    func toggleSection(header: HeaderCell, section: Int) {
+        var concreteSection = sections[section]
+        if concreteSection.isCollapsible {
+            // Toggle collapse
+            let collapsed = !concreteSection.isCollapsed
+            concreteSection.isCollapsed = collapsed
+            header.setCollapsed(collapsed: collapsed)
+            // Adjust the number of the rows inside the section
+            reloadSections?(section)
+        }
+    }
+    
+    
+}
