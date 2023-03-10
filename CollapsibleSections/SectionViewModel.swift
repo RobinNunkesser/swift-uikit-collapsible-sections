@@ -7,19 +7,10 @@
 
 import Foundation
 
-protocol SectionViewModel {
-    var sectionTitle: String { get }
-       var rowCount: Int { get }
-       var isCollapsible: Bool { get }
-       var isCollapsed: Bool { get set }
+struct SectionViewModel {
+    let sectionTitle: String
+    var sectionCells: [CellViewModel]
+    let isCollapsible: Bool = true
+    var isCollapsed: Bool = false
 }
 
-extension SectionViewModel {
-   var rowCount: Int {
-      return 1
-   }
-   
-   var isCollapsible: Bool {
-      return true
-   }
-}

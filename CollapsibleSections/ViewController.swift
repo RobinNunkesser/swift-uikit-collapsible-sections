@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ViewController: UIViewController {
     
     @IBOutlet weak var tableView: UITableView!
                     
@@ -18,22 +18,36 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         super.viewDidLoad()
         // Do any additional setup after loading the view.
     }
+                
+}
+
+extension ViewController : UITableViewDataSource {
     
-    // MARK: UITableViewDataSource
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return sections.count
+    }
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return sections[section].sectionTitle
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return items.count
+        return sections[section].sectionCells.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier:
                                                  "SubtitleCell",
                                                  for: indexPath)
-        let item = items[indexPath.row]
+        let item = sections[indexPath.section].sectionCells[indexPath.row]
         cell.textLabel?.text = item.title
         cell.detailTextLabel?.text = item.subtitle
         return cell
     }
-        
+    
+}
+
+extension ViewController : UITableViewDelegate {
+    
 }
 
