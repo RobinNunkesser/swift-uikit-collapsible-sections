@@ -28,6 +28,8 @@ class ViewController: UIViewController {
         tableView?.rowHeight = UITableView.automaticDimension
         tableView?.sectionHeaderHeight = 70
         tableView?.separatorStyle = .none
+        
+        tableView?.register(HeaderView.nib, forHeaderFooterViewReuseIdentifier: HeaderView.identifier)
     }
     
 }
@@ -51,10 +53,11 @@ extension ViewController : UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let cell = tableView.dequeueReusableCell(withIdentifier:
-                                                    "HeaderCell") as! HeaderCell
+        let cell = tableView.dequeueReusableHeaderFooterView(withIdentifier:
+                                                                HeaderView.identifier) as! HeaderView
         let concreteSection = sections[section]
         cell.titleLabel?.text = concreteSection.sectionTitle
+        cell.arrowLabel?.text = concreteSection.isCollapsed ? ">" : "V"
         cell.section = section
         cell.delegate = self
         return cell
@@ -76,9 +79,9 @@ extension ViewController : UITableViewDelegate {
     
 }
 
-extension ViewController: HeaderCellDelegate {
-    func toggleSection(header: HeaderCell, section: Int) {
-        var concreteSection = sections[section]
+extension ViewController: HeaderViewDelegate {
+    func toggleSection(header: HeaderView, section: Int) {
+        let concreteSection = sections[section]
         if concreteSection.isCollapsible {
             // Toggle collapse
             let collapsed = !concreteSection.isCollapsed
