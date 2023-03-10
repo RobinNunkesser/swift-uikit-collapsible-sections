@@ -10,20 +10,7 @@ import UIKit
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     @IBOutlet weak var tableView: UITableView!
-    
-    // MARK: - Types
-    struct ViewModel {
-        let title : String
-        let subtitle : String
-        init(title : String, subtitle : String) {
-            self.title = title
-            self.subtitle = subtitle
-        } }
-    
-    // MARK: - Properties
-    var items : [ViewModel] = [ViewModel(title:"Title 1", subtitle:"Subtitle 1"),
-                               ViewModel(title:"Title 2",
-                                         subtitle:"Subtitle 2")]
+                    
     // MARK: - Methods
     // MARK: Lifecycle
     
@@ -47,7 +34,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         cell.detailTextLabel?.text = item.subtitle
         return cell
     }
-    
-    
+        
 }
 

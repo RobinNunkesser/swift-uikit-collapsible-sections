@@ -7,20 +7,12 @@
 
 import Foundation
 
-protocol CellViewModel {
-    var type: CellType { get }
-    var sectionTitle: String { get }
-       var rowCount: Int { get }
-       var isCollapsible: Bool { get }
-       var isCollapsed: Bool { get set }
-}
-
-extension CellViewModel {
-   var rowCount: Int {
-      return 1
-   }
-   
-   var isCollapsible: Bool {
-      return true
-   }
+struct CellViewModel {
+    let title : String
+    let subtitle : String
+    
+    init(title : String, subtitle : String) {
+        self.title = title
+        self.subtitle = subtitle
+    }
 }
